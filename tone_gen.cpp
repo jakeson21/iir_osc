@@ -10,14 +10,27 @@ int main()
 {
     double xs, xc;
 
-    Osc.Init(48000, 48);
+    double Freq_Hz = 48;
 
-    for (size_t n=0; n<1000; n++)
+    double Fs_Hz = 48000;
+
+    Osc.Init(Fs_Hz, Freq_Hz);
+
+    size_t N = 48000;
+
+    for (size_t n=0; n<N; n++)
     {
-
         Osc.step(xs, xc);
 
-        std::cout << xs << " " << xc << std::endl;
+        std::cout << xc << " " << xs << std::endl;
+
+        if ((n+1)%1000 == 0)
+        {
+            Freq_Hz *= 1.1;
+
+            Osc.UpdateFreq(Freq_Hz);
+            
+        }
     }
 
     return 0;
