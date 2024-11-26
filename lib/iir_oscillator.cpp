@@ -43,8 +43,11 @@ void IIR_CoupledResonator::UpdateFreq(double inFreqHz)
 
 void IIR_CoupledResonator::step(double& sinOut, double& cosOut)
 {
-    sinOut = this->cos_prev*this->rsin_theta + this->sin_prev*this->rcos_theta;
-    cosOut = this->cos_prev*this->rcos_theta - this->sin_prev*this->rsin_theta;
-    this->sin_prev = sinOut;
-    this->cos_prev = cosOut;
+    sinOut = this->sin_prev;
+    cosOut = this->cos_prev;
+    double xs, xc;
+    xs = this->cos_prev*this->rsin_theta + this->sin_prev*this->rcos_theta;
+    xc = this->cos_prev*this->rcos_theta - this->sin_prev*this->rsin_theta;
+    this->sin_prev = xs;
+    this->cos_prev = xc;
 }

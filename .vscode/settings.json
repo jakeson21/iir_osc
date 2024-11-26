@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp"
+    },
+    "C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\g++.exe"
+}
