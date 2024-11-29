@@ -2,7 +2,8 @@
 #include <iir_oscillator.h>
 #include <cmath>
 
-IIR_CoupledResonator::IIR_CoupledResonator()
+template <typename T>
+IIR_CoupledResonator<T>::IIR_CoupledResonator()
 {
     this->sin_prev = 0;
     this->cos_prev = 1;
@@ -13,7 +14,8 @@ IIR_CoupledResonator::IIR_CoupledResonator()
     this->dPhase = 0;
 }
 
-IIR_CoupledResonator::IIR_CoupledResonator(double inSampRateHz, double inFreqHz)
+template <typename T>
+IIR_CoupledResonator<T>::IIR_CoupledResonator(T inSampRateHz, T inFreqHz)
 : SampRateHz(inSampRateHz),
   FreqHz(inFreqHz),
   sin_prev(0),
@@ -25,7 +27,8 @@ IIR_CoupledResonator::IIR_CoupledResonator(double inSampRateHz, double inFreqHz)
     this->Init(SampRateHz, FreqHz);
 }
 
-void IIR_CoupledResonator::Init(double inSampRateHz, double inFreqHz)
+template <typename T>
+void IIR_CoupledResonator<T>::Init(T inSampRateHz, T inFreqHz)
 {
     this->SampRateHz = inSampRateHz;
     this->UpdateFreq(inFreqHz);
@@ -33,7 +36,8 @@ void IIR_CoupledResonator::Init(double inSampRateHz, double inFreqHz)
     this->cos_prev = 1;
 }
 
-void IIR_CoupledResonator::UpdateFreq(double inFreqHz)
+template <typename T>
+void IIR_CoupledResonator<T>::UpdateFreq(T inFreqHz)
 {
     this->FreqHz = inFreqHz;
     this->dPhase = this->FreqHz*2.0*M_PI/this->SampRateHz;
@@ -41,13 +45,16 @@ void IIR_CoupledResonator::UpdateFreq(double inFreqHz)
     this->rcos_theta = std::cos(this->dPhase);
 }
 
-void IIR_CoupledResonator::step(double& sinOut, double& cosOut)
+template <typename T>
+typename IIR_CoupledResonator<T>::ReturnType IIR_CoupledResonator<T>::Step()
 {
-    sinOut = this->sin_prev;
-    cosOut = this->cos_prev;
-    double xs, xc;
+    IIR_CoupledResonator<T>::ReturnType ret;
+    ret.y = this->sin_prev;
+    ret.x = this->cos_prev;
+    T xs, xc;
     xs = this->cos_prev*this->rsin_theta + this->sin_prev*this->rcos_theta;
     xc = this->cos_prev*this->rcos_theta - this->sin_prev*this->rsin_theta;
     this->sin_prev = xs;
     this->cos_prev = xc;
+    return ret;
 }

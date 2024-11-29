@@ -9,19 +9,29 @@ import wave
 
 CHUNK = 1024
 
-command = ["../build/tone_gen", "-r", "48000", "-f", "48", "-n", "960000"]
+command = ["../build/tone_gen", "-r", "48000", "-f", "100", "-n", "1920000"]
 result = subprocess.run(command, capture_output=True, text=True)
 output = result.stdout.strip()
 lines = output.splitlines()
 words = output.split()
 
-# print(output)
-# print(lines)
-data = np.genfromtxt(lines)
-print(data.shape)
+print(words)
 
-data16 = (data * 0.8 * 32767).astype(dtype=np.int16)
+if words[1] == '4':
+    data = np.fromfile(words[0], dtype=np.float32)
+elif words[1] == '8':
+    data = np.fromfile(words[0], dtype=np.double)
+else:
+    print("ERROR")
+
+x_y = data.reshape(int(data.size/2),2)
+
+print(x_y.shape)
+
+data16 = (x_y * 0.8 * 32767).astype(dtype=np.int16)
 data16 = data16.flatten('C')
+
+print(data16.shape)
 
 # Instantiate PyAudio and initialize PortAudio system resources (1)
 p = pyaudio.PyAudio()

@@ -1,23 +1,32 @@
 // IIR Resonator Parameters
 
+template <typename T>
 class IIR_CoupledResonator {
-
 public:
 
     IIR_CoupledResonator();
-    IIR_CoupledResonator(double inSampRateHz, double inFreqHz);
+    IIR_CoupledResonator(T inSampRateHz, T inFreqHz);
 
-    void Init(double inSampRateHz, double inFreqHz);
-    void UpdateFreq(double inFreqHz);
-    void step(double& sinOut, double& cosOut);
+    void Init(T inSampRateHz, T inFreqHz);
+    void UpdateFreq(T inFreqHz);
+
+    struct ReturnType {
+        T x;
+        T y;
+    };
+
+    ReturnType Step();
 
 protected:
 
-    double sin_prev;
-    double cos_prev;
-    double rsin_theta;
-    double rcos_theta;
-    double SampRateHz;
-    double FreqHz;
-    double dPhase;
+    T sin_prev;
+    T cos_prev;
+    T rsin_theta;
+    T rcos_theta;
+    T SampRateHz;
+    T FreqHz;
+    T dPhase;
 };
+
+template class IIR_CoupledResonator<double>;
+template class IIR_CoupledResonator<float>;
